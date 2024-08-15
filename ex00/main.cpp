@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:14:39 by dabdygal          #+#    #+#             */
-/*   Updated: 2024/08/13 16:44:40 by dabdygal         ###   ########.fr       */
+/*   Updated: 2024/08/15 16:55:57 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,21 @@ int	main(int argc, char *argv[])
 		return EXIT_FAILURE;
 	}
 
-	BitcoinExchange	bitcoinPriceHistory(databaseIStream);
+	BitcoinExchange	bitcoinPriceHistory;
+	databaseIStream >> bitcoinPriceHistory;
 	if (databaseIStream.fail())
 	{
 		std::cerr << argv[0] << ": Error parsing file \"" << DATABASE_FILE << '"' << std::endl;
+		return EXIT_FAILURE;
+	}
+
+	try
+	{
+		bitcoinPriceHistory.processRequest(inputFileIStream);
+	}
+	catch (std::exception &e)
+	{
+		std::cerr << e.what() << std::endl;
 		return EXIT_FAILURE;
 	}
 	return EXIT_SUCCESS;
