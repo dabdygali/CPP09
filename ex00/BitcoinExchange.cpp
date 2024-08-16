@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 16:45:48 by dabdygal          #+#    #+#             */
-/*   Updated: 2024/08/15 17:11:41 by dabdygal         ###   ########.fr       */
+/*   Updated: 2024/08/16 13:28:44 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include <cctype>
 #include <sstream>
 #include <iostream>
+#include <ctime>
+#include <cstring>
 #include "BitcoinExchange.hpp"
 
 BitcoinExchange::BitcoinExchange()
@@ -37,20 +39,9 @@ BitcoinExchange	&BitcoinExchange::operator=(const BitcoinExchange &rhs)
 
 static bool	isDate(const std::string &str)
 {
-	if (str.size() != 10)
+	struct tm	tmp;
+	if (strptime(str.c_str(), "%Y-%m-%d", &tmp) == NULL)
 		return false;
-	int	i = 0;
-	while (i < 10)
-	{
-		if (i == 4 || i == 7)
-		{
-			if (str[i] != '-')
-				return false;			
-		}
-		else if (!isdigit(str[i]))
-			return false;
-		i++;
-	}
 	return true;
 }
 
@@ -73,6 +64,33 @@ void	BitcoinExchange::addElement(const std::string &str)
 	
 	if (!insert(std::pair<std::string, float>(date, price)).second)
 		throw std::invalid_argument("Line \"" + str + "\": date already exist");
+}
+
+void	BitcoinExchange::processRequestEntry(const std::string &str)
+{
+	size_t	delimeterPosition = str.find(REQUEST_DELIMETER);
+	if (delimeterPosition == str.npos)
+	{
+		std::cout << "Error: delimiter \"" << REQUEST_DELIMETER << "\" not found." << std::endl;
+		return;
+	}
+	std::string	date(str, 0, delimeterPosition);
+	if (!isDate(date))
+	{
+		std::cout << "Error: date is not recognised: \"" << date << '"' << std::endl;
+		return;
+	}
+	float				value;
+	std::istringstream	iss(str.substr(delimeterPosition + strlen(REQUEST_DELIMETER)));
+	iss >> value;
+	if (iss.fail() || !iss.eof() || value < 0 || value > 1000)
+	{
+		std::cout << "Error: wrong value: \"" << str.substr(delimeterPosition + strlen(REQUEST_DELIMETER)) << '"' << std::endl;
+		return;
+	}
+	float				result;
+	map::iterator		iter;
+	if (find(date) != end())
 }
 
 void	BitcoinExchange::processRequest(std::ifstream &in)
