@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/12 14:14:36 by dabdygal          #+#    #+#             */
-/*   Updated: 2024/08/16 10:54:14 by dabdygal         ###   ########.fr       */
+/*   Updated: 2024/08/19 10:00:07 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,11 @@
 	#include <string>
 	#include <fstream>
 
-	#define DATABASE_FILE		"data.csv"
-	#define DATABASE_HEADER		"date,exchange_rate"
-	#define REQUEST_HEADER		"date | value"
-	#define REQUEST_DELIMETER	" | "
+	#define DATABASE_FILE			"data.csv"
+	#define DATABASE_HEADER			"date,exchange_rate"
+	#define REQUEST_HEADER			"date | value"
+	#define REQUEST_DELIMETER		" | "
+	#define REQUEST_DELIMETER_SIZE	sizeof(REQUEST_DELIMETER)
 	
 	class BitcoinExchange : public std::map<std::string, float>
 	{

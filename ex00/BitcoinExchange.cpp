@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/13 16:45:48 by dabdygal          #+#    #+#             */
-/*   Updated: 2024/08/16 13:28:44 by dabdygal         ###   ########.fr       */
+/*   Updated: 2024/08/19 10:55:11 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include <sstream>
 #include <iostream>
 #include <ctime>
-#include <cstring>
 #include "BitcoinExchange.hpp"
 
 BitcoinExchange::BitcoinExchange()
@@ -81,16 +80,40 @@ void	BitcoinExchange::processRequestEntry(const std::string &str)
 		return;
 	}
 	float				value;
-	std::istringstream	iss(str.substr(delimeterPosition + strlen(REQUEST_DELIMETER)));
+	std::istringstream	iss(str.substr(delimeterPosition + REQUEST_DELIMETER_SIZE - 1));
 	iss >> value;
 	if (iss.fail() || !iss.eof() || value < 0 || value > 1000)
 	{
-		std::cout << "Error: wrong value: \"" << str.substr(delimeterPosition + strlen(REQUEST_DELIMETER)) << '"' << std::endl;
+		std::cout << "Error: wrong value: \"" << str.substr(delimeterPosition + REQUEST_DELIMETER_SIZE - 1) << '"' << std::endl;
 		return;
 	}
 	float				result;
-	map::iterator		iter;
 	if (find(date) != end())
+	{
+		result = at(date) * value;
+		std::cout << date << " => " << value << " = " << result << std::endl;
+		return;
+	}
+	else if (!empty() && date > (*begin()).first)
+	{
+		map::iterator		iter;
+		iter = begin();
+		while (iter != end())
+		{
+			if (date < (*iter).first)
+			{
+				result = (*iter).second * value;
+				std::cout << date << " => " << value << " = " << result << std::endl;
+				return;
+			}
+			iter++;
+		}
+		iter--;
+		result = (*iter).second * value;
+		std::cout << date << " => " << value << " = " << result << std::endl;
+		return;
+	}
+	std::cout << "Error: no record suitable for date: \"" << date << '"' << std::endl;
 }
 
 void	BitcoinExchange::processRequest(std::ifstream &in)
