@@ -6,12 +6,13 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 14:13:07 by dabdygal          #+#    #+#             */
-/*   Updated: 2024/08/20 12:02:26 by dabdygal         ###   ########.fr       */
+/*   Updated: 2024/08/22 11:26:07 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdexcept>
 #include <cctype>
+#include <functional>
 #include "RPN.hpp"
 
 RPN::RPN()
@@ -39,15 +40,33 @@ void	RPN::processToken(char c)
 		push(c - '0');
 		return;
 	}
-	
+	switch (c)
+	{
+		case '+':
+			performBinaryOperation(std::plus<float>());
+			return;
+		case '-':
+			performBinaryOperation(std::minus<float>());
+			return;
+		case '*':
+			performBinaryOperation(std::multiplies<float>());
+			return;
+		case '/':
+			if (top() == 0)
+				throw std::invalid_argument("Error: Division by zero");
+			performBinaryOperation(std::divides<float>());
+			return;
+		default:
+			throw std::invalid_argument("Operator not recognised: " + c);
+	}
 }
 
 float	RPN::evaluate(const char *str)
 {
-	if (str == NULL)
+	if (str == NULL || str[0] == '\0')
 		throw std::invalid_argument("No arguments passed");
 	int	i = 0;
-	while (str[0] != '\0')
+	while (str[i] != '\0')
 	{
 		if (str[i] != ' ')
 		{
@@ -57,4 +76,5 @@ float	RPN::evaluate(const char *str)
 		}
 		i++;
 	}
+	return top();
 }

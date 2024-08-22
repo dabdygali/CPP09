@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 13:09:43 by dabdygal          #+#    #+#             */
-/*   Updated: 2024/08/20 11:35:06 by dabdygal         ###   ########.fr       */
+/*   Updated: 2024/08/21 13:25:25 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ int	main(int argc, char *argv[])
 	catch (std::exception &e)
 	{
 		std::cerr << e.what() << std::endl;
+		return EXIT_FAILURE;
+	}
+	if (calculator.size() != 1)
+	{
+		std::cerr << "Wrong format" << std::endl;
 		return EXIT_FAILURE;
 	}
 	std::cout << calculator.top() << std::endl;
