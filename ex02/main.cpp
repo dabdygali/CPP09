@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 12:52:23 by dabdygal          #+#    #+#             */
-/*   Updated: 2024/08/30 14:15:29 by dabdygal         ###   ########.fr       */
+/*   Updated: 2024/09/13 10:41:40 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,12 @@ int	main(int argc, char *argv[])
 	try
 	{
 		argsToVector(argv + 1, vec);
+		pmergeme(vec);
 	}
 	catch (std::exception &e)
 	{
 		std::cerr << e.what() << std::endl;
 		return EXIT_FAILURE;
 	}
-	pmergeme(vec);
 	return EXIT_SUCCESS;
 }
