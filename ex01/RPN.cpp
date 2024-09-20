@@ -6,13 +6,14 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/19 14:13:07 by dabdygal          #+#    #+#             */
-/*   Updated: 2024/08/22 11:26:07 by dabdygal         ###   ########.fr       */
+/*   Updated: 2024/09/20 10:07:50 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdexcept>
 #include <cctype>
 #include <functional>
+#include <string>
 #include "RPN.hpp"
 
 RPN::RPN()
@@ -35,6 +36,8 @@ RPN &RPN::operator=(const RPN &rhs)
 
 void	RPN::processToken(char c)
 {
+	std::string	tmp("Operator not recognised: ");
+	tmp.push_back(c);
 	if (isdigit(c))
 	{
 		push(c - '0');
@@ -57,7 +60,7 @@ void	RPN::processToken(char c)
 			performBinaryOperation(std::divides<float>());
 			return;
 		default:
-			throw std::invalid_argument("Operator not recognised: " + c);
+			throw std::invalid_argument(tmp);
 	}
 }
 

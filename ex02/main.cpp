@@ -6,7 +6,7 @@
 /*   By: dabdygal <dabdygal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/30 12:52:23 by dabdygal          #+#    #+#             */
-/*   Updated: 2024/09/13 11:29:32 by dabdygal         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:25:53 by dabdygal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 static void	argsToVector(const char *const *argv, std::vector<int> &vec)
 {
 	if (argv == NULL || *argv == NULL)
-		return;
+		throw std::invalid_argument("Error: No data entered");
 	std::stringstream	sio;
 	while (*argv != NULL)
 	{
